@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My 가계부</title>
+</head>
+<body>
+	<h1>통장 리스트</h1>
+	{% if accounts %}
+		{% for account in accounts %}
+		<!-- <form action="./accountdel" method="POST">{% csrf_token %} -->
+			<input type="hidden" id='hdn_account_id' value='{{ account.account_id }}'></input>
+			<table>
+		    	<tr>
+		    		<td>	    	
+				    	<label>통장 이름 : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_account_name' style="width:100%"> {{ account.account_name }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>	    	
+				    	<label>잔액 : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_account_balance' style="width:100%"> {{ account.account_balance }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
+				    	<label>통장종류 : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_account_kind' style="width:100%"> {{ account.account_kind }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
+				    	<label>은행명 : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_bank' style="width:100%"> {{ account.bank }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
+				    	<label>계좌번호 : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_account_num' style="width:100%"> {{ account.account_num }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
+				    	<label>통장목적 : </label>
+		    		</td>
+		    		<td>
+		    			<label style="width:100%"> {{ account.account_kind }}</label>
+		    		</td>
+		    		<td>
+		    			<input type="submit" value="삭제" style="float:right; width:80px" onclick="onClickDelete()"></input>
+		    		</td>
+		    		<td>
+		    			<input type="submit" value="수정" style="float:right; width:80px"></input>
+		    		</td>
+		    	</tr>
+		    </table>
+	    <!-- </form>  -->
+		{% endfor %}
+	{% endif %}
+    <script type="text/javascript">
+    	function onClickDelete() {
+    		var val_account_id = $('#hdn_account_id').val();
+    		$.post("accountdel", {account_id:val_account_id}); 
+    	}
+    	
+    	function onClickUpdate() {
+    		var val_account_id = $('#hdn_account_id').val();
+    		$.post("/accountdel", {account_id:val_account_id}); 
+    	}
+    	
+    	// 버튼이 두개라 form으로 post할수없으므로 csrf 문구를 붙일곳이 없으므로 아래 두개의 메소드로 해결.
+    	function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+              var cookies = document.cookie.split(';');
+              for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+                }
+              }
+            }
+            return cookieValue;
+          }
+    	
+          function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+          }
+          $(document).ready(function() {
+            var csrftoken = getCookie('csrftoken');
+            $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                  xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+              }
+            });
+          });
+    </script>
+</body>
+</html>

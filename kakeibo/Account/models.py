@@ -13,6 +13,7 @@ class AccountList(models.Model):
     account_purpose = models.IntegerField(null=True, validators=[MaxValueValidator(99)])
     account_purpose_other = models.CharField(null=True, max_length=30)
     account_balance = models.BigIntegerField(default=0)
+    delete_flg = models.CharField(max_length = 1, default='N')
     
     class Meta:
         db_table = 'AccountList'
