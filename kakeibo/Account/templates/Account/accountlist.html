@@ -41,6 +41,14 @@
 		    	</tr>
 		    	<tr>
 		    		<td>
+				    	<label>통장종류(기타) : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label id='lbl_account_kind_other' style="width:100%"> {{ account.account_kind_other }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
 				    	<label>은행명 : </label>
 		    		</td>
 		    		<td colspan=2>
@@ -59,14 +67,28 @@
 		    		<td>
 				    	<label>통장목적 : </label>
 		    		</td>
+		    		<td colspan=2>
+		    			<label style="width:100%" id='lbl_account_purpose'> {{ account.account_purpose }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
 		    		<td>
-		    			<label style="width:100%"> {{ account.account_kind }}</label>
+				    	<label>통장목적(기타) : </label>
+		    		</td>
+		    		<td colspan=2>
+		    			<label style="width:100%" id='lbl_account_purpose_other'> {{ account.account_purpose_other }}</label>
+		    		</td>
+		    	</tr>
+		    	<tr>
+		    		<td>
+		    		</td>
+		    		<td>
 		    		</td>
 		    		<td>
 		    			<input type="submit" value="삭제" style="float:right; width:80px" onclick="onClickDelete()"></input>
 		    		</td>
 		    		<td>
-		    			<input type="submit" value="수정" style="float:right; width:80px"></input>
+		    			<input type="submit" value="수정" style="float:right; width:80px" onclick="onClickUpdate()"></input>
 		    		</td>
 		    	</tr>
 		    </table>
@@ -81,7 +103,25 @@
     	
     	function onClickUpdate() {
     		var val_account_id = $('#hdn_account_id').val();
-    		$.post("/accountdel", {account_id:val_account_id}); 
+    		var val_account_name = $('#lbl_account_name').val();
+    		var val_account_balance = $('#lbl_account_balance').val();
+    		var val_account_kind = $('#lbl_account_kind').val();
+    		var val_account_kind_other = $('#lbl_account_kind_other').val();
+    		var val_bank = $('#lbl_bank').val();
+    		var vaL_account_num = $('#lbl_account_num').val();
+    		var val_account_purpose = $('#lbl_account_purpose').val();
+    		var val_account_purpose_other = $('#lbl_account_purpose_other').val();
+    		
+    		$.post("/accountupdate", {
+    			account_id:val_account_id, 
+    			account_name:val_account_name, 
+    			account_balance:val_account_balance, 
+    			account_kind:val_account_kind, 
+    			account_kind_other:val_account_kind_other, 
+    			bank:val_bank,
+    			account_num:vaL_account_num,
+    			account_purpose:val_account_purpose,
+    			account_purpose_other:val_account_purpose_other}); 
     	}
     	
     	// 버튼이 두개라 form으로 post할수없으므로 csrf 문구를 붙일곳이 없으므로 아래 두개의 메소드로 해결.
